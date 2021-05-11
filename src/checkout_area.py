@@ -5,14 +5,12 @@ from collections import deque
 class CheckoutArea(object):
 
     def __init__(self, register_list):
-        #heapq.heapify(register_list)
         self.register_list = register_list
 
     def get_register_by_shortest_line_size(self) -> Register:
         """
         Gets the register with the shortest line (fewest number of customers in line).
         """
-        #return self.register_list[0]
         return sorted(self.register_list)[0]
 
     def get_register_by_least_number_of_items(self) -> Register:
@@ -42,32 +40,30 @@ class CheckoutArea(object):
             elif customer.type == 'B':
                 register_least_items = self.get_register_by_least_number_of_items()
                 register_least_items.customers_queue.append(customer)
+            else:
+                raise Exception('File contains incorrect type of customer class.')
 
     def check_out(self):
         """
-
+        Logic to checkout customer items for every register.
         """
         for register in self.register_list:
-            register_customer_q = register.customers_queue
             if self.is_training_register(register):
-                self.training_register_checkout(register_customer_q)
+                self.training_register_checkout(register.customers_queue)
             else:
-                self.regular_register_checkout(register_customer_q)
+                self.regular_register_checkout(register.customers_queue)
 
     def is_training_register(self, register: Register) -> bool:
         """
         Checks if the current register is a training register.
 
         :param register: register to check status of
-        :return:
         """
         return register.register_number == len(self.register_list) - 1
 
     def register_has_customer(self) -> bool:
         """
         Checks to see if any register is still servicing a customer.
-
-        :return:
         """
         for register in self.register_list:
             if len(register.customers_queue):
@@ -77,24 +73,24 @@ class CheckoutArea(object):
     @staticmethod
     def training_register_checkout(register_customer_q: deque):
         """
+        Logic to simulate a trainee register.
 
-
-        :param register_customer_q:
+        :param register_customer_q: queue of customers for register
         """
         if not register_customer_q:
             return
         customer = register_customer_q[0]
         if customer:
-            customer.items -= 1 / 2
+            customer.items -= (1 / 2)
             if customer.items == 0:
                 register_customer_q.popleft()
 
     @staticmethod
     def regular_register_checkout(register_customer_q: deque):
         """
+        Logic to simulate a regular register.
 
-
-        :param register_customer_q:
+        :param register_customer_q: queue of customers for register
         """
         if not register_customer_q:
             return

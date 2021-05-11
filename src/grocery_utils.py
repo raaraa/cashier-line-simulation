@@ -50,7 +50,7 @@ def create_checkout_area(number_of_registers) -> CheckoutArea:
     :return: checkout area that contains a list of all the registers.
     """
     registers_lst = []
-    for i in range(int(number_of_registers)):
+    for i in range(number_of_registers):
         registers_lst.append(Register(i))
     return CheckoutArea(registers_lst)
 
